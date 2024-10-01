@@ -13,7 +13,20 @@ function Board() {
    const [promotionInfo, setPromotionInfo] = useState(null);
    const [isIllegalMoveError, setIsIlegalMoveError] = useState(false)
 
-   
+   const [allBlackMoves, setAllBlackMoves] = useState()
+   const [allWhiteMoves, setAllWhtieMoves] = useState()
+
+   const [isCheck, setIsCheck] = useState(null)
+
+   useEffect(() => {
+    const isKingOnPath = Object.values(possibleMoves).some(e => {
+      const isKingOnPath = String(e).includes("king")
+      if(isKingOnPath) setIsCheck(e)
+      return isKingOnPath
+    })
+
+    if(!isKingOnPath) setIsCheck(null)
+   },[possibleMoves, activePiece])
 
    const onDrop = (e, to) => {
         const from = e.dataTransfer.getData("position")
@@ -54,21 +67,24 @@ function Board() {
               const finalColIndex = isRowEven ? colIndex + 1 : colIndex;
               const backgroundColor = finalColIndex % 2 === 0 ? style.darkCell : style.lightCell;
 
-              const isMoveClassName = possibleMoves[cellName] === false ? style.isMove : possibleMoves[cellName] === true ? style.isKill : null
+              const isMoveClassName = possibleMoves[cellName] === false ? style.isMove : typeof possibleMoves[cellName] == "string" ? style.isKill : null
               const isErrorClassName = isIllegalMoveError == cellName ? style.error : null
+
+
+              console.log({cell: `${col}${row}`, isCheck, dd: piecesPlacement[cellName], condition: piecesPlacement[cellName] == isCheck})
               return (
                 <div key={colIndex} className={`${style.col} ${backgroundColor} ${isMoveClassName} `} onMouseDown={() => setActivePiece(cellName)} onDragOver={e => e.preventDefault()}  onDrop={e => onDrop(e, cellName)}
                     style={activePiece === cellName ? {backgroundColor: "#829769"} : {}}
                 >
                     {piceImageMap[piecesPlacement[cellName]] && (
                         <img  
-                            className={isErrorClassName}
+                            className={`${isErrorClassName} ${isCheck==piecesPlacement[cellName] && style.isCheck}`}
                             src={piceImageMap[piecesPlacement[cellName]]} 
                             onDragStart={(e) => handleDrag(e, cellName)}  
                             draggable 
                         ></img>
                     )}
-                    {/* <p>{col}{row}</p> */}
+                    <p>{col}{row}</p>
                 </div>
               );
             })}

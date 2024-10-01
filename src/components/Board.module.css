@@ -109,8 +109,22 @@
     }
 }
 
+@keyframes checkAnimation {
+    0% { 
+      transform: translateX(-4px) scale(1); 
+    }
+    100% { 
+      transform: translateX(4px) scale(1); 
+    }
+}
+
   
   
 .error {
     animation: shakeAndGlow 0.7s ease;
+}
+
+.isCheck {
+    animation: checkAnimation 0.3s infinite ease-in-out;
+    filter: drop-shadow(0 0 20px rgba(255, 0, 0, 1)); 
 }

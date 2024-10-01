@@ -24,7 +24,7 @@ const generateMoves = (colIdx, rowIdx, directions, activePieceColor, piecesPlace
 
       if (targetPiece) {
         const [color] = targetPiece.split("-");
-        if (color !== activePieceColor) moves[newCord] = true; // Capture Move
+        if (color !== activePieceColor) moves[newCord] = targetPiece; // Capture Move
         break;
       } else {
         moves[newCord] = false; // Empty
@@ -38,6 +38,7 @@ const generateMoves = (colIdx, rowIdx, directions, activePieceColor, piecesPlace
     }
   });
 
+  console.log({moves})
   return moves;
 };
 
@@ -80,10 +81,10 @@ const getPawnMoves = (activePiece, activePieceColor, piecesPlacement) => {
   const captureRight = `${BOARDCOLS[colIdx + 1]}${BOARDROWS[rowIdx + direction]}`;
 
   if (captureLeft && piecesPlacement[captureLeft]?.startsWith(activePieceColor === "l" ? "d" : "l")) {
-    moves[captureLeft] = true;
+    moves[captureLeft] = piecesPlacement[captureLeft];
   }
   if (captureRight && piecesPlacement[captureRight]?.startsWith(activePieceColor === "l" ? "d" : "l")) {
-    moves[captureRight] = true;
+    moves[captureRight] = piecesPlacement[captureRight];
   }
 
   return moves;
