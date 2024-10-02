@@ -38,7 +38,6 @@ const generateMoves = (colIdx, rowIdx, directions, activePieceColor, piecesPlace
     }
   });
 
-  console.log({moves})
   return moves;
 };
 

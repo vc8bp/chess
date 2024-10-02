@@ -4,7 +4,8 @@
     width: 100%;
     aspect-ratio: 1 / 1;
     max-width: 800px;   
-    height: auto;       
+    height: auto;      
+    user-select: none;; 
 }
 
 .row {
@@ -118,6 +119,30 @@
     }
 }
 
+@keyframes checkingAnimation {
+  0% { 
+      transform: translateX(0) scale(1); 
+      filter: drop-shadow(0 0 0px rgba(255, 0, 0, 0)); 
+  }
+  25% { 
+      transform: translateX(-3px) scale(1.2); 
+      filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8)); 
+  }
+  50% { 
+      transform: translateX(0) scale(1.1); 
+      filter: drop-shadow(0 0 20px rgba(255, 0, 0, 1)); 
+  }
+  75% { 
+      transform: translateX(3px) scale(1.2); 
+      filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8)); 
+  }
+  100% { 
+      transform: translateX(0) scale(1); 
+      filter: drop-shadow(0 0 0px rgba(255, 0, 0, 0)); 
+  }
+}
+
+
   
   
 .error {
@@ -125,6 +150,13 @@
 }
 
 .isCheck {
-    animation: checkAnimation 0.3s infinite ease-in-out;
+    animation: checkingAnimation 1s infinite ease-in-out;
     filter: drop-shadow(0 0 20px rgba(255, 0, 0, 1)); 
+}
+
+
+
+
+.isChecking {
+  filter: drop-shadow(0 0 15px blue);
 }

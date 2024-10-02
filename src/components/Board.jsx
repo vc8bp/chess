@@ -1,36 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './Board.module.css';
 import { getPossibleMoves } from './possibleMoves';
 import PromoteModal from './PromoteModal/PromoteModal';
 import { defaultPlacement, piceImageMap, BOARDROWS, BOARDCOLS } from '../assets/constants';
+import { calculateAllMoves, calculateCheckmate } from './utils';
 
 
 
 function Board() {
    const [piecesPlacement, setPiecesPlacement] = useState(defaultPlacement);
    const [activePiece, setActivePiece] = useState()
-   const [possibleMoves, setPossibeMoves] = useState({})
+   const [activePieceMoves, setActivePiecesMoves] = useState({})
    const [promotionInfo, setPromotionInfo] = useState(null);
    const [isIllegalMoveError, setIsIlegalMoveError] = useState(false)
 
-   const [allBlackMoves, setAllBlackMoves] = useState()
-   const [allWhiteMoves, setAllWhtieMoves] = useState()
+   const [allPiecesMoves, setAllPiecesMoves] = useState({})
 
-   const [isCheck, setIsCheck] = useState(null)
-
-   useEffect(() => {
-    const isKingOnPath = Object.values(possibleMoves).some(e => {
-      const isKingOnPath = String(e).includes("king")
-      if(isKingOnPath) setIsCheck(e)
-      return isKingOnPath
-    })
-
-    if(!isKingOnPath) setIsCheck(null)
-   },[possibleMoves, activePiece])
+   const [checkInfo, setCheckInfo] = useState(null)
 
    const onDrop = (e, to) => {
         const from = e.dataTransfer.getData("position")
-        if(!Object.keys(possibleMoves).includes(to)) { // move is illegal  
+        if(!Object.keys(activePieceMoves).includes(to)) { // move is illegal  
           setIsIlegalMoveError(from)
           setTimeout(() => setIsIlegalMoveError(false) , 1000);
           return
@@ -46,11 +36,40 @@ function Board() {
         setActivePiece(to)
    }   
 
+
    useEffect(() => {
-        if(!activePiece) return setPossibeMoves({})
-        console.log(getPossibleMoves(activePiece, piecesPlacement))
-        setPossibeMoves(getPossibleMoves(activePiece, piecesPlacement))
-   },[activePiece, piecesPlacement])
+     const darkData = calculateAllMoves("d", piecesPlacement)
+     const lightData = calculateAllMoves("l", piecesPlacement)
+
+    if(darkData.isCkecking){
+      const checkmateForLight = calculateCheckmate(darkData, lightData, piecesPlacement);
+      if(checkmateForLight === null) return window.alert("CHECK MATE, BLACK WINS")
+
+      lightData.moves = checkmateForLight.possibleMoves
+      setCheckInfo(darkData.isCkecking)
+    } else setCheckInfo({})
+
+    if(lightData.isCkecking){
+      const checkmateForDark = calculateCheckmate(lightData, darkData, piecesPlacement);
+      if(checkmateForDark === null) return window.alert("CHECK MATE, WHTIE WINS")
+
+      darkData.moves = checkmateForDark.possibleMoves
+      setCheckInfo(lightData.isCkecking)
+    } else setCheckInfo({})
+
+
+    const data = {d: darkData.moves, l: lightData.moves}
+    console.log(data)
+    setAllPiecesMoves(data)
+   },[piecesPlacement])
+
+   useEffect(() => {
+    console.log(allPiecesMoves, activePiece)
+    if(activePiece){
+      const [color] = piecesPlacement[activePiece]
+      if(allPiecesMoves[color]) setActivePiecesMoves(allPiecesMoves[color][activePiece] || {})
+    }
+   },[activePiece, allPiecesMoves])
    
 
    const handleDrag = (e, position) => {
@@ -64,21 +83,32 @@ function Board() {
           <div key={rowIndex} className={style.row}>
             {BOARDCOLS.map((col, colIndex) => {
               const cellName = `${col}${row}`
+              let pieceInfo = piecesPlacement[cellName]
+
+              if(pieceInfo){
+                const [pieceColor, pieceName] = pieceInfo.split("-")
+                pieceInfo = {name: pieceName, color: pieceColor, moves: allPiecesMoves[pieceColor]?.[cellName]}
+              }
+
               const finalColIndex = isRowEven ? colIndex + 1 : colIndex;
               const backgroundColor = finalColIndex % 2 === 0 ? style.darkCell : style.lightCell;
 
-              const isMoveClassName = possibleMoves[cellName] === false ? style.isMove : typeof possibleMoves[cellName] == "string" ? style.isKill : null
+
+              const isMoveClassName = activePieceMoves[cellName] === false ? style.isMove : typeof activePieceMoves[cellName] == "string" ? style.isKill : null
               const isErrorClassName = isIllegalMoveError == cellName ? style.error : null
 
 
-              console.log({cell: `${col}${row}`, isCheck, dd: piecesPlacement[cellName], condition: piecesPlacement[cellName] == isCheck})
               return (
                 <div key={colIndex} className={`${style.col} ${backgroundColor} ${isMoveClassName} `} onMouseDown={() => setActivePiece(cellName)} onDragOver={e => e.preventDefault()}  onDrop={e => onDrop(e, cellName)}
                     style={activePiece === cellName ? {backgroundColor: "#829769"} : {}}
                 >
                     {piceImageMap[piecesPlacement[cellName]] && (
                         <img  
-                            className={`${isErrorClassName} ${isCheck==piecesPlacement[cellName] && style.isCheck}`}
+                            className={`
+                              ${isErrorClassName} 
+                              ${checkInfo?.kingPosition==cellName && style.isCheck}
+                              ${checkInfo?.checkFromCell==cellName && style.isChecking}
+                            `}
                             src={piceImageMap[piecesPlacement[cellName]]} 
                             onDragStart={(e) => handleDrag(e, cellName)}  
                             draggable 
