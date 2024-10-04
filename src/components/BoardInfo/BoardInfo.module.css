@@ -1,0 +1,111 @@
+.boardInfo {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+
+.player {
+  width: min-content;
+  display: flex;
+  align-items: center;
+  background-color: #262421;
+  padding: 0rem 1rem;
+  letter-spacing: 3px;
+  font-family: Arial, sans-serif;
+}
+
+.timer {
+  font-size: 3.2rem;
+  color: #fff;
+}
+
+.activePlayer {
+  background-color: #502826;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.top {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+
+.centerSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 0px 0.5rem 0.5rem 0;
+  background-color: #262421;
+  padding-top: 1.1px;
+}
+
+.border {
+  transition: width 0.3s ease-in-out;
+  border: 2px solid green;
+}
+
+.title {
+  padding: 0.3rem 0.6rem;
+  font-size: 1.2rem;
+}
+
+.moveList {
+  width: 100%;
+  font-family: 'Courier New', Courier, monospace;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.movesRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem;
+
+}
+
+.movesRow:first-child {
+  background-color: #302e2c;
+  padding: 0.4rem 0.7rem;
+}
+
+.move {
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  width: 100%;
+}
+
+.rematchButton,
+.opponentButton {
+  width: 100%;
+  padding: 1.4rem;
+  background-color: #302e2c;
+  border: none;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: Arial, sans-serif;
+}
+
+.rematchButton:hover,
+.opponentButton:hover {
+  background-color: #4b6032;
+}
+
+.pieceIcon {
+  width: 20px; 
+  height: 20px;
+  margin-right: 5px;
+}

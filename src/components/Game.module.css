@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  isolation: isolate;
+  align-items: center;
+}
+
+
+
+.boardContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+

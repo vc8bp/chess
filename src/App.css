@@ -4,4 +4,6 @@
     align-items: center;
     height: 100vh;
     height: 100dvh;
+    background-color: black;
+    color: white;
 }
