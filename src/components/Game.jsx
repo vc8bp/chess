@@ -6,21 +6,18 @@ import { calculateAllMoves, calculateCheckmate } from './utils';
 import Board from './board/Board';
 import BoardInfo from './BoardInfo/BoardInfo';
 
-const TIME = 300
 
-
-
-function Game() {
+function Game({time}) {
   const [piecesPlacement, setPiecesPlacement] = useState(defaultPlacement);
   const [promotionInfo, setPromotionInfo] = useState(null);
   const [isIllegalMoveError, setIsIlegalMoveError] = useState(false);
   const [allPiecesMoves, setAllPiecesMoves] = useState({});
   const [checkInfo, setCheckInfo] = useState(null);
-  const [currentPlayer, setCurrentPlayer] = useState('P1'); // Manage current turn
+  const [currentPlayer, setCurrentPlayer] = useState('P1'); 
   const [moveHistory, setMoveHistory] = useState([]);
 
-  const [p1Time, setP1Time] = useState(TIME); // 5 minutes
-  const [p2Time, setP2Time] = useState(TIME);
+  const [p1Time, setP1Time] = useState(time); 
+  const [p2Time, setP2Time] = useState(time);
 
   const intervalRef = useRef(null);
 
@@ -29,8 +26,8 @@ function Game() {
   const resetGame = () => {
     clearInterval(intervalRef.current); 
     setPiecesPlacement(defaultPlacement); 
-    setP1Time(TIME); 
-    setP2Time(TIME); 
+    setP1Time(time); 
+    setP2Time(time); 
     setCurrentPlayer('P1'); 
     setAllPiecesMoves({});
     setCheckInfo(null); 
@@ -161,7 +158,7 @@ function Game() {
         isIllegalMoveError={isIllegalMoveError}
         handlePieceMove={handlePieceMove}
       />
-      <BoardInfo history={moveHistory} p1Time={p1Time} p2Time={p2Time} currentPlayer={currentPlayer} TIME={TIME} />
+      <BoardInfo history={moveHistory} p1Time={p1Time} p2Time={p2Time} currentPlayer={currentPlayer} TIME={time} />
 
       {promotionInfo && (
         <PromoteModal

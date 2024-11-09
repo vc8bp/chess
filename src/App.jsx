@@ -3,13 +3,14 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Game from './components/Game'
+import StartGame from './components/StartGameScreen/StartGame'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [time, setTime] = useState(null)
 
   return (
     <div className='container'>
-      <Game/>
+      {time === null ? <StartGame setTime={setTime} /> :  <Game time={time}/>}
     </div>
   )
 }

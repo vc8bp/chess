@@ -1,0 +1,45 @@
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 20px;
+    background: url("/public/chess.png");
+    background-position: center;
+    background-size: contain;
+  }
+  
+  .gridItem {
+    background-color: #2a272473;
+    color: #ddd;
+    padding: 3rem 6rem;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+    
+  }
+  
+  .gridItem:hover {
+    background-color: #444;
+  }
+  
+  .time {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    font-size: 1.5em;
+    line-height: 1.6em;
+    letter-spacing: .1em;
+  }
+  
+  .label {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #888;
+    display: block;
+    font-size: 1.5em;
+    line-height: 1.6em;
+    letter-spacing: .1em;
+  }
+  
