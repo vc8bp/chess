@@ -97,7 +97,7 @@ function Board({currentPlayer, piecesPlacement, allPiecesMoves, checkInfo, isIll
                                     draggable 
                                 ></img>
                             )}
-                            <p>{col}{row}</p>
+                            {/* <p>{col}{row}</p> */}
                         </div>
                     );
                     })}

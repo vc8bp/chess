@@ -145,11 +145,8 @@ function Game({time}) {
     setAllPiecesMoves(data);
   }, [piecesPlacement]);
 
-
   return (
     <div className={style.container}>
-
-
       <Board
         currentPlayer={currentPlayer == "P1" ? "l" : "d"}
         piecesPlacement={piecesPlacement}
